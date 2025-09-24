@@ -5,19 +5,19 @@
 package Servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.UserAccountDAO;
+import model.UserAccountDTO;
 
 /**
  *
  * @author Minht
  */
-@WebServlet(name = "NewServlet", urlPatterns = {"/NewServlet"})
-public class NewServlet extends HttpServlet {
+public class RegisterServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,18 +31,22 @@ public class NewServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
+        try  {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet NewServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet NewServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+            String fullname = request.getParameter("txtFullname");
+            String password = request.getParameter("txtPassword");
+            String email = request.getParameter("txtEmail");
+            int role = Integer.parseInt(request.getParameter("txtRole"));
+            UserAccountDAO dao = new UserAccountDAO();
+            boolean isSuccess = dao.register(fullname,password,email,role);
+            if (isSuccess){
+                response.sendRedirect("login.html");
+                 }else{
+                response.sendRedirect("register.html");
+            }
+        }catch (SQLException ex){
+            log("SQL exception: "+ ex.toString());
+        }   
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

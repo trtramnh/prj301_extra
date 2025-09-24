@@ -27,6 +27,15 @@ public class UserAccountDTO {
         this.role = role;
     }
 
+    public UserAccountDTO(String fullName ,String password, String email, int role) {
+        this.password = password;
+        this.email = email;
+        this.fullName = fullName;
+        this.role = role;
+    }
+
+    
+
     public int getMemberId() {
         return memberId;
     }
